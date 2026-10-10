@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, dialog } from 'electron'
+import { app, BrowserWindow, ipcMain, dialog, shell } from 'electron'
 import path from 'path'
 import fs from 'fs'
 import { fileURLToPath } from 'url'
@@ -21,7 +21,24 @@ function createWindow() {
       preload: path.join(__dirname, 'preload.mjs'),
       contextIsolation: true,
       nodeIntegration: false,
+      sandbox: true,
+      webSecurity: true,
     },
+  })
+
+  // Harden navigation: never open new windows; route external links to the OS browser.
+  mainWindow.webContents.setWindowOpenHandler(({ url }) => {
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+      shell.openExternal(url)
+    }
+    return { action: 'deny' }
+  })
+  mainWindow.webContents.on('will-navigate', (event, url) => {
+    const allowed = isDev ? 'http://localhost:5173' : 'file://'
+    if (!url.startsWith(allowed)) {
+      event.preventDefault()
+      if (url.startsWith('http://') || url.startsWith('https://')) shell.openExternal(url)
+    }
   })
 
   if (isDev) {

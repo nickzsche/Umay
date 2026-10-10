@@ -1,1 +1,0 @@
-"use strict";const o=require("electron");o.contextBridge.exposeInMainWorld("electron",{getNotes:()=>o.ipcRenderer.invoke("get-notes"),saveNotes:e=>o.ipcRenderer.invoke("save-notes",e),exportNotes:e=>o.ipcRenderer.invoke("export-notes",e),exportAiPrompt:e=>o.ipcRenderer.invoke("export-ai-prompt",e)});
