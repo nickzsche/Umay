@@ -184,6 +184,7 @@ export default function App() {
       status: 'active',
       tags: template?.tags || [],
       pinned: false,
+      starred: false,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       projectId: selectedProjectId,
@@ -352,6 +353,9 @@ export default function App() {
   }, [])
 
   const allNotes = data.projects.flatMap(p => p.notes)
+  const starredItems = data.projects.flatMap(p =>
+    p.notes.filter(n => n.starred).map(n => ({ note: n, projectName: p.name, projectId: p.id }))
+  )
 
   if (loading) {
     return (
@@ -686,15 +690,30 @@ export default function App() {
         isOpen={showQuickNote}
         onClose={() => setShowQuickNote(false)}
         onSave={(note) => {
-          if (selectedProjectId) {
-            const newNote = { ...note, id: crypto.randomUUID(), createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() }
+          const targetProjectId = note.projectId || selectedProjectId
+          if (targetProjectId) {
+            const now = new Date().toISOString()
+            const newNote: Note = {
+              id: crypto.randomUUID(),
+              title: note.title,
+              content: note.content,
+              type: 'note',
+              status: 'active',
+              tags: note.tags,
+              pinned: false,
+              starred: false,
+              createdAt: now,
+              updatedAt: now,
+              projectId: targetProjectId,
+            }
             setData(prev => ({
               ...prev,
               projects: prev.projects.map(p =>
-                p.id === selectedProjectId
-                  ? { ...p, notes: [...p.notes, newNote] }
+                p.id === targetProjectId
+                  ? { ...p, notes: [...p.notes, newNote], updatedAt: now }
                   : p
               ),
+              lastUpdated: now,
             }))
           }
           setShowQuickNote(false)
@@ -703,7 +722,7 @@ export default function App() {
       />
 
       <StarredNotes
-        data={data}
+        data={starredItems}
         isOpen={showStarred}
         onClose={() => setShowStarred(false)}
         onSelectNote={(noteId, projectId) => {
@@ -764,10 +783,12 @@ export default function App() {
         <BacklinksPanel
           note={selectedNote}
           allNotes={allNotes}
+          allProjects={data.projects}
           isOpen={showBacklinks}
           onClose={() => setShowBacklinks(false)}
-          onNavigate={(noteId, projectId) => {
-            setSelectedProjectId(projectId)
+          onNavigate={(noteId) => {
+            const project = data.projects.find(p => p.notes.some(n => n.id === noteId))
+            if (project) setSelectedProjectId(project.id)
             setSelectedNoteId(noteId)
             setShowBacklinks(false)
           }}
@@ -784,9 +805,9 @@ export default function App() {
         data={data}
         isOpen={showSmartFolders}
         onClose={() => setShowSmartFolders(false)}
-        onSelectNote={(noteId, projectId) => {
-          setSelectedProjectId(projectId)
-          setSelectedNoteId(noteId)
+        onSelectNote={(note) => {
+          if (note.projectId) setSelectedProjectId(note.projectId)
+          setSelectedNoteId(note.id)
           setShowSmartFolders(false)
         }}
       />

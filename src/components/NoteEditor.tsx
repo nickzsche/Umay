@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { Note, Project, NoteType, NoteStatus } from '../types'
 import { exportAiPrompt } from '../storage'
-import { ArrowLeft, Save, Trash2, Tag, Wand2, Eye, FileEdit, Type, CheckCircle2, Clock, X, Sparkles } from 'lucide-react'
+import { ArrowLeft, Save, Trash2, Tag, Wand2, Eye, FileEdit, Type, CheckCircle2, Clock, X, Sparkles, Star, Focus, List, FileOutput, History, Link2, Copy } from 'lucide-react'
 
 interface NoteEditorProps {
   note: Note
@@ -9,6 +9,13 @@ interface NoteEditorProps {
   onUpdate: (noteId: string, updates: Partial<Note>) => void
   onClose: () => void
   onDelete: (noteId: string) => void
+  onDuplicate: (note: Note) => void
+  onToggleStar: () => void
+  onShowFocus: () => void
+  onShowToc: () => void
+  onShowExport: () => void
+  onShowHistory: () => void
+  onShowBacklinks: () => void
 }
 
 export default function NoteEditor({
@@ -17,6 +24,13 @@ export default function NoteEditor({
   onUpdate,
   onClose,
   onDelete,
+  onDuplicate,
+  onToggleStar,
+  onShowFocus,
+  onShowToc,
+  onShowExport,
+  onShowHistory,
+  onShowBacklinks,
 }: NoteEditorProps) {
   const [title, setTitle] = useState(note.title)
   const [content, setContent] = useState(note.content)
@@ -134,6 +148,16 @@ ${project.notes.filter(n => n.id !== note.id).map(n => `- ${n.title} (${n.type})
           >
             {showPreview ? <FileEdit size={18} /> : <Eye size={18} />}
           </button>
+          <div className="flex items-center gap-0.5 mr-1">
+            <button onClick={onShowFocus} className="btn-ghost" title="Focus Mode (Cmd+Shift+F)"><Focus size={18} /></button>
+            <button onClick={onShowToc} className="btn-ghost" title="Table of Contents (Cmd+Shift+T)"><List size={18} /></button>
+            <button onClick={onShowBacklinks} className="btn-ghost" title="Backlinks (Cmd+Shift+B)"><Link2 size={18} /></button>
+            <button onClick={onShowHistory} className="btn-ghost" title="History (Cmd+Shift+H)"><History size={18} /></button>
+            <button onClick={onShowExport} className="btn-ghost" title="Export (Cmd+Shift+O)"><FileOutput size={18} /></button>
+            <button onClick={() => onDuplicate(note)} className="btn-ghost" title="Duplicate"><Copy size={18} /></button>
+            <button onClick={onToggleStar} className={`btn-ghost ${note.starred ? 'text-amber-500' : ''}`} title="Star"><Star size={18} fill={note.starred ? 'currentColor' : 'none'} /></button>
+          </div>
+          <div className="h-5 w-px bg-gray-200 dark:bg-gray-700" />
           <button
             onClick={generateAiPrompt}
             className="btn-secondary text-sm shadow-sm"

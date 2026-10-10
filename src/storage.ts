@@ -50,6 +50,8 @@ export const createEmptyData = (): AppData => ({
     autoSaveInterval: 500,
     aiExportTemplate: 'default',
     showArchived: false,
+    focusMode: false,
+    wordCountGoal: 500,
   },
   dailyNotes: [],
   trash: [],
