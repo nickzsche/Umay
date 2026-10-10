@@ -1,13 +1,12 @@
 # <img src="build/logo.png" width="60" align="center" /> Umay
 
 <div align="center">
-  <strong>AI-Powered Note Manager</strong> | <strong>Yapay Zeka Destekli Not Yöneticisi</strong>
+  <strong>AI-Assisted Note Manager</strong> | <strong>Yapay Zeka Destekli Not Yöneticisi</strong>
   <br><br>
   <img src="https://img.shields.io/badge/Electron-33.2-blue?style=flat&logo=electron" />
   <img src="https://img.shields.io/badge/React-18.3-blue?style=flat&logo=react" />
   <img src="https://img.shields.io/badge/TypeScript-5.6-blue?style=flat&logo=typescript" />
   <img src="https://img.shields.io/badge/Tailwind-3.4-blue?style=flat&logo=tailwindcss" />
-  <img src="https://img.shields.io/badge/license-MIT-green?style=flat" />
   <br><br>
   <img src="https://img.shields.io/badge/Platform-macOS%20%7C%20Windows%20%7C%20Linux-lightgrey?style=flat" />
   <br><br>
@@ -21,44 +20,65 @@
 
 ## 🚀 What is Umay?
 
-**Umay** is a fully local, AI-readable note-taking application designed for developers and thinkers. Unlike cloud-based solutions, your data stays exclusively on your device (stored in `~/Documents/AI-Notes/notes.json`).
+**Umay** is a **local-first** note-taking application for developers and thinkers. Everything runs on your machine — there is no account, no cloud backend, and no telemetry. Your data is written to a single JSON file (`~/Documents/AI-Notes/notes.json`) and stays there.
+
+Umay is "AI-assisted" in two concrete, on-device ways:
+
+1. **AI prompt export** — turn a whole project (or a single note) into a structured prompt you can paste into ChatGPT, Claude, or any LLM. Umay never calls an LLM itself; you stay in control of where your data goes.
+2. **On-device text analysis** — note summaries, tag suggestions and related-note discovery run as local heuristics (keyword/tag overlap, sentence extraction). No network request is ever made.
 
 ### ✨ Key Features
 
 #### 📝 Note Management
-- **Multiple Note Types**: Notes, Tasks, and Ideas
-- **Projects**: Organize your thoughts into project-based collections
-- **Tags & Labels**: Powerful tagging system with tag cloud visualization
+- **Multiple note types**: Notes, Tasks, and Ideas
+- **Projects**: Organize notes into project-based collections
+- **Tags**: Tagging system with a tag-cloud visualization
 - **Pin & Star**: Mark important notes for quick access
-- **Kanban Board**: Drag-and-drop task management
-- **Search**: Lightning-fast ⌘K search across all notes
+- **Kanban board**: Drag-and-drop task management
+- **Search**: ⌘K fast search across all notes
 
-#### 🤖 AI Integration
-- **AI Export**: Generate structured AI prompts from your projects for ChatGPT, Claude, or any LLM
-- **Smart Tags**: Auto-suggested tags based on content
-- **Related Notes**: Intelligent content-based note linking
-- **Note Summaries**: AI-generated note summaries
+#### 🤖 AI-Assisted (local & explicit)
+- **AI Export**: Generate structured prompts from a project or note for ChatGPT, Claude, or any LLM
+- **Smart Tags**: On-device tag suggestions from note content
+- **Related Notes**: Content-similarity note discovery (word/tag overlap)
+- **Note Summaries**: Extractive summary generated from the note text
 
-#### ⚡ Productivity Features
-- **Keyboard Shortcuts**: ⌘K (Search), ⌘N (Quick Note), ⌘E (AI Export), ⌘D (Daily Notes), ⌘F (Focus Mode)
-- **Focus Mode**: Distraction-free writing environment
+#### ⚡ Productivity
+- **Focus Mode**: Distraction-free writing
 - **Split View**: Side-by-side note editing
 - **Daily Notes**: Daily journaling with automatic date tracking
-- **Word Count**: Real-time word and character statistics
-- **Reading Time**: Estimated reading time for each note
+- **Word Count & Reading Time**: Live statistics per note
+- **Quick Note**: Capture a thought with ⌘⇧N
 
-#### 🔄 Advanced Features
-- **Note History**: Version tracking for all your edits
-- **Backlinks**: See which notes reference each other
-- **Attachments**: File attachment support for notes
-- **Reminders**: Due date reminders for tasks
-- **Archive**: Archive old projects without losing them
-- **Trash**: Soft-delete with recovery option
-- **Smart Folders**: Dynamic filtering based on criteria
+#### 🔄 Advanced
+- **Note History**: Version tracking with restore
+- **Backlinks**: `[[wiki-link]]` cross-referencing between notes
+- **Attachments**: File attachments per note
+- **Reminders**: Due-date reminders for tasks
+- **Archive / Trash**: Soft-delete with recovery
+- **Smart Folders**: Dynamic filtered views (recent, starred, long, untagged…)
 - **Batch Operations**: Multi-select and bulk actions
 - **Statistics Dashboard**: Visual analytics of your notes
-- **Export**: Markdown, JSON, and AI prompt export
-- **Dark Mode**: Full dark theme support
+- **Export**: Markdown, JSON, and AI-prompt export
+- **Dark Mode**: Full dark theme
+
+### ⌨️ Keyboard Shortcuts
+
+| Shortcut | Action | Shortcut | Action |
+|---|---|---|---|
+| `⌘K` | Search | `⌘⇧I` | AI Features |
+| `⌘N` | New Note | `⌘⇧E` | AI Export |
+| `⌘S` | Save | `⌘⇧V` | Split View |
+| `⌘T` | Templates | `⌘⇧K` | Kanban / Grid |
+| `⌘⇧P` | New Project | `⌘⇧F` | Focus Mode |
+| `⌘⇧N` | Quick Note | `⌘⇧B` | Backlinks |
+| `⌘⇧D` | Daily Notes | `⌘⇧H` | History |
+| `⌘⇧G` | Tags Cloud | `⌘⇧S` | Statistics |
+| `⌘⇧M` | Smart Folders | `⌘⇧O` | Export |
+| `⌘⇧L` | Starred | `⌘⇧A` | Archive |
+| `⌘⇧R` | Reminders | `⌘⇧X` | Trash |
+| `⌘⇧T` | Table of Contents | `⌘⇧U` | Batch Operations |
+| `Esc` | Close modal | | |
 
 ### 🖼️ Screenshots
 
@@ -79,7 +99,7 @@
   <br><sub><i>Dark Mode - Easy on the eyes</i></sub>
 </div>
 
-### 🛠️ Installation
+### 🛠️ Installation & Development
 
 ```bash
 # Clone the repository
@@ -89,44 +109,40 @@ cd Umay
 # Install dependencies
 npm install
 
-# Run in development mode
+# Run the renderer in dev mode
 npm run dev
 
-# Build the application
+# Type-check and build the renderer + Electron main/preload
 npm run build
+
+# Build installers (dmg / nsis / AppImage) into ./release
+npm run package
 ```
 
-### 📦 Download
-
-Pre-built binaries are available in the [Releases](https://github.com/nickzsche/Umay/releases) section.
+`npm run build` runs `tsc` (strict type-check) followed by `vite build`, producing `dist/` (renderer) and `dist-electron/` (main + preload).
 
 ### 🎯 Use Cases
 
 - **Project Documentation**: Document APIs, architecture decisions, and bug reports
 - **Knowledge Management**: Build a personal knowledge base with interconnected notes
-- **Task Management**: Track todos and project milestones with Kanban
+- **Task Management**: Track todos and milestones with a Kanban board
 - **AI Context Preparation**: Export project context as structured prompts for AI assistants
 - **Daily Journaling**: Daily notes with automatic date tracking
-- **Learning Notes**: Organize learning materials with tags and links
 
-### 🛡️ Privacy
+### 🛡️ Privacy & Security
 
 - **100% Local**: All data stored in `~/Documents/AI-Notes/notes.json`
-- **No Cloud**: No internet connection required, no external servers
-- **Your Data**: You own and control everything
+- **No Cloud, No Telemetry**: No internet connection required, no external servers
+- **Hardened Electron renderer**: `contextIsolation: true`, `nodeIntegration: false`, `sandbox: true`; external links are handed to the OS browser, and window creation / navigation is denied by default
 
 ### 🏗️ Tech Stack
 
-- **Electron**: Cross-platform desktop framework
+- **Electron 33**: Cross-platform desktop framework
 - **React 18**: UI library with hooks
-- **TypeScript**: Type-safe development
-- **Tailwind CSS**: Utility-first styling
-- **Vite**: Fast build tool
-- **Lucide React**: Beautiful icons
-
-### 📝 License
-
-MIT License - See [LICENSE](LICENSE) for details.
+- **TypeScript 5.6**: Strict, type-safe development
+- **Tailwind CSS 3.4**: Utility-first styling
+- **Vite 6**: Fast build tool
+- **Lucide React**: Icons
 
 </details>
 
@@ -137,44 +153,51 @@ MIT License - See [LICENSE](LICENSE) for details.
 
 ## 🚀 Umay Nedir?
 
-**Umay**, geliştiriciler ve düşünürler için tasarlanmış, tamamen yerel (local) çalışan, yapay zeka ile uyumlu bir not tutma uygulamasıdır. Bulut tabanlı çözümlerin aksine, verileriniz tamamen cihazınızda kalır (`~/Documents/AI-Notes/notes.json` içinde saklanır).
+**Umay**, geliştiriciler ve düşünenler için tasarlanmış **tamamen yerel (local-first)** bir not tutma uygulamasıdır. Her şey cihazınızda çalışır — hesap yok, bulut arka uç yok, telemetri yok. Verileriniz tek bir JSON dosyasına (`~/Documents/AI-Notes/notes.json`) yazılır ve orada kalır.
+
+Umay iki somut, cihaz-içi yolla "yapay zeka desteklidir":
+
+1. **AI prompt export** — Bir projeyi (veya tek bir notu) ChatGPT, Claude ya da herhangi bir LLM'e yapıştırabileceğiniz yapılandırılmış bir prompt'a dönüştürür. Umay kendisi hiçbir LLM'e istek atmaz; verinizin nereye gideceğini siz kontrol edersiniz.
+2. **Cihaz-içi metin analizi** — Not özetleri, etiket önerileri ve ilişkili not bulma tamamen yerel sezgisel yöntemlerle (kelime/etiket örtüşmesi, cümle çıkarımı) çalışır. Hiçbir ağ isteği yapılmaz.
 
 ### ✨ Temel Özellikler
 
 #### 📝 Not Yönetimi
-- **Çoklu Not Türleri**: Notlar, Görevler ve Fikirler
-- **Projeler**: Düşüncelerinizi proje bazlı koleksiyonlarda organize edin
-- **Etiketler**: Etiket bulutu görselleştirmesi ile güçlü etiket sistemi
+- **Çoklu not türleri**: Notlar, Görevler ve Fikirler
+- **Projeler**: Notları proje bazlı koleksiyonlarda organize edin
+- **Etiketler**: Etiket bulutu görselleştirmeli etiketleme
 - **Pin & Star**: Önemli notları hızlı erişim için işaretleyin
-- **Kanban Panosu**: Sürükle-bırak görev yönetimi
-- **Arama**: Tüm notlarda yıldırım hızında ⌘K arama
+- **Kanban panosu**: Sürükle-bırak görev yönetimi
+- **Arama**: Tüm notlarda ⌘K hızlı arama
 
-#### 🤖 Yapay Zeka Entegrasyonu
-- **AI Export**: Projelerinizden ChatGPT, Claude veya herhangi bir LLM için yapılandırılmış AI prompt'ları oluşturun
-- **Akıllı Etiketler**: İçeriğe dayalı otomatik etiket önerileri
-- **İlişkili Notlar**: İçerik bazlı akıllı not bağlantıları
-- **Not Özetleri**: AI tarafından oluşturulan not özetleri
+#### 🤖 Yapay Zeka Desteği (yerel ve şeffaf)
+- **AI Export**: Proje veya nottan ChatGPT, Claude ya da herhangi bir LLM için yapılandırılmış prompt üretin
+- **Akıllı Etiketler**: Not içeriğinden cihaz-içi etiket önerileri
+- **İlişkili Notlar**: İçerik benzerliğine dayalı not keşfi (kelime/etiket örtüşmesi)
+- **Not Özetleri**: Not metninden çıkarımsal özet
 
-#### ⚡ Verimlilik Özellikleri
-- **Klavye Kısayolları**: ⌘K (Arama), ⌘N (Hızlı Not), ⌘E (AI Export), ⌘D (Günlük Notlar), ⌘F (Odak Modu)
-- **Odak Modu**: Dikkat dağıtıcı unsurlardan arındırılmış yazma ortamı
+#### ⚡ Verimlilik
+- **Odak Modu**: Dikkat dağıtıcı unsurlardan arındırılmış yazma
 - **Bölünmüş Görünüm**: Yan yana not düzenleme
 - **Günlük Notlar**: Otomatik tarih takibi ile günlük tutma
-- **Kelime Sayısı**: Gerçek zamanlı kelime ve karakter istatistikleri
-- **Okuma Süresi**: Her not için tahmini okuma süresi
+- **Kelime Sayısı & Okuma Süresi**: Her not için canlı istatistik
+- **Hızlı Not**: ⌘⇧N ile anında fikir kaydı
 
-#### 🔄 Gelişmiş Özellikler
-- **Not Geçmişi**: Tüm düzenlemeleriniz için versiyon takibi
-- **Geri Bağlantılar**: Hangi notların birbirine referans verdiğini görün
-- **Ekler**: Notlar için dosya eki desteği
+#### 🔄 Gelişmiş
+- **Not Geçmişi**: Kurtarmalı sürüm takibi
+- **Geri Bağlantılar**: Notlar arası `[[wiki-link]]` çapraz referans
+- **Ekler**: Not başına dosya eki
 - **Hatırlatıcılar**: Görevler için son tarih hatırlatıcıları
-- **Arşiv**: Eski projeleri kaybetmeden arşivleyin
-- **Çöp Kutusu**: Kurtarma seçeneği ile yumuşak silme
-- **Akıllı Klasörler**: Kriter bazlı dinamik filtreleme
+- **Arşiv / Çöp Kutusu**: Kurtarmalı yumuşak silme
+- **Akıllı Klasörler**: Dinamik filtreli görünümler (son eklenen, yıldızlı, uzun, etiketsiz…)
 - **Toplu İşlemler**: Çoklu seçim ve toplu eylemler
-- **İstatistik Dashboard**: Notlarınızın görsel analitiği
+- **İstatistik Dashboard**: Notların görsel analitiği
 - **Dışa Aktarma**: Markdown, JSON ve AI prompt export
-- **Karanlık Mod**: Tam karanlık tema desteği
+- **Karanlık Mod**: Tam karanlık tema
+
+### ⌨️ Klavye Kısayolları
+
+Yukarıdaki İngilizce bölümdeki kısayol tablosu ile aynıdır (`⌘`, macOS'ta Command; Windows/Linux'ta Ctrl).
 
 ### 🖼️ Ekran Görüntüleri
 
@@ -195,7 +218,7 @@ MIT License - See [LICENSE](LICENSE) for details.
   <br><sub><i>Karanlık Mod - Göz Yorulmasını Önler</i></sub>
 </div>
 
-### 🛠️ Kurulum
+### 🛠️ Kurulum ve Geliştirme
 
 ```bash
 # Repoyu klonlayın
@@ -205,44 +228,40 @@ cd Umay
 # Bağımlılıkları yükleyin
 npm install
 
-# Geliştirme modunda çalıştırın
+# Renderer'ı geliştirme modunda çalıştırın
 npm run dev
 
-# Uygulamayı derleyin
+# Tip kontrolü + renderer ve Electron main/preload derlemesi
 npm run build
+
+# Kurulum paketlerini (dmg / nsis / AppImage) ./release içine üretin
+npm run package
 ```
 
-### 📦 İndirme
-
-Önceden derlenmiş uygulama dosyaları [Releases](https://github.com/nickzsche/Umay/releases) bölümünde mevcuttur.
+`npm run build`, `tsc` (katı tip kontrolü) ardından `vite build` çalıştırır; `dist/` (renderer) ve `dist-electron/` (main + preload) üretir.
 
 ### 🎯 Kullanım Alanları
 
 - **Proje Dokümantasyonu**: API'leri, mimari kararları ve hata raporlarını dokümante edin
-- **Bilgi Yönetimi**: Birbirine bağlı notlar ile kişisel bilgi tabanı oluşturun
-- **Görev Yönetimi**: Kanban ile todo'ları ve proje kilometre taşlarını takip edin
-- **AI Bağlam Hazırlama**: Projelerinizi yapılandırılmış prompt'lar olarak AI asistanlarına export edin
+- **Bilgi Yönetimi**: Birbirine bağlı notlarla kişisel bilgi tabanı oluşturun
+- **Görev Yönetimi**: Kanban panosuyla todo ve kilometre taşlarını takip edin
+- **AI Bağlam Hazırlama**: Proje bağlamını AI asistanlarına yapılandırılmış prompt olarak export edin
 - **Günlük Tutma**: Otomatik tarih takibi ile günlük notlar
-- **Öğrenme Notları**: Etiketler ve bağlantılar ile öğrenme materyallerini organize edin
 
-### 🛡️ Gizlilik
+### 🛡️ Gizlilik ve Güvenlik
 
 - **%100 Yerel**: Tüm veriler `~/Documents/AI-Notes/notes.json` içinde saklanır
-- **Bulut Yok**: İnternet bağlantısı gerekmez, harici sunucu yok
-- **Veriniz Sizin**: Her şeyi siz sahiplenir ve kontrol edersiniz
+- **Bulut ve Telemetri Yok**: İnternet bağlantısı gerekmez, harici sunucu yok
+- **Sıkılaştırılmış Electron renderer**: `contextIsolation: true`, `nodeIntegration: false`, `sandbox: true`; harici bağlantılar işletim sistemi tarayıcısına devredilir, yeni pencere ve yönlendirmeler varsayılan olarak engellenir
 
 ### 🏗️ Teknoloji Yığını
 
-- **Electron**: Çapraz platform masaüstü framework'ü
-- **React 18**: Hook'lar ile UI kütüphanesi
-- **TypeScript**: Tip güvenli geliştirme
-- **Tailwind CSS**: Utility-first stil
-- **Vite**: Hızlı build aracı
-- **Lucide React**: Güzel ikonlar
-
-### 📝 Lisans
-
-MIT Lisans - Detaylar için [LICENSE](LICENSE) dosyasına bakın.
+- **Electron 33**: Çapraz platform masaüstü framework'ü
+- **React 18**: Hook'larla UI kütüphanesi
+- **TypeScript 5.6**: Katı, tip güvenli geliştirme
+- **Tailwind CSS 3.4**: Utility-first stil
+- **Vite 6**: Hızlı build aracı
+- **Lucide React**: İkonlar
 
 </details>
 
@@ -252,7 +271,7 @@ MIT Lisans - Detaylar için [LICENSE](LICENSE) dosyasına bakın.
   <br>
   <strong>Made with ❤️ for developers and thinkers</strong>
   <br>
-  <sub>Geliştiriciler ve düşünürler için ❤️ ile yapıldı</sub>
+  <sub>Geliştiriciler ve düşünenler için ❤️ ile yapıldı</sub>
   <br><br>
   <a href="https://github.com/nickzsche/Umay/stargazers">⭐ Star</a> • 
   <a href="https://github.com/nickzsche/Umay/issues">🐛 Report Bug</a> • 

@@ -1,18 +1,28 @@
 {
-  "name": "ai-note-app",
+  "name": "umay",
   "version": "1.0.0",
-  "description": "AI-Readable Note Manager",
+  "description": "Umay — a local-first, AI-assisted note manager for developers (Electron + React + TypeScript + Tailwind)",
   "main": "dist-electron/main.js",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nickzsche/Umay.git"
+  },
+  "homepage": "https://github.com/nickzsche/Umay",
+  "bugs": {
+    "url": "https://github.com/nickzsche/Umay/issues"
+  },
+  "author": "nickzsche",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build && electron-builder",
+    "build": "tsc && vite build",
+    "package": "npm run build && electron-builder",
     "preview": "vite preview",
     "electron:dev": "vite --mode development"
   },
   "build": {
-    "appId": "com.yourcompany.ai-note-app",
-    "productName": "AI Note App",
+    "appId": "com.nickzsche.umay",
+    "productName": "Umay",
     "directories": {
       "output": "release"
     },
