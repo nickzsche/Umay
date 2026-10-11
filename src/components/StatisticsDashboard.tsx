@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import { AppData } from '../types'
+import { toLocalDateString } from '../dateUtils'
 import { X, BarChart3, FolderOpen, FileText, CheckSquare, Tag, TrendingUp, Calendar, Hash, Activity } from 'lucide-react'
 
 interface StatisticsDashboardProps {
@@ -33,11 +34,11 @@ export default function StatisticsDashboard({ data, isOpen, onClose }: Statistic
     const activityByDay: Record<string, number> = {}
     for (let i = 6; i >= 0; i--) {
       const d = new Date(now.getTime() - i * 24 * 60 * 60 * 1000)
-      const key = d.toISOString().split('T')[0]
+      const key = toLocalDateString(d)
       activityByDay[key] = 0
     }
     allNotes.forEach(n => {
-      const created = n.createdAt.split('T')[0]
+      const created = toLocalDateString(new Date(n.createdAt))
       if (activityByDay.hasOwnProperty(created)) {
         activityByDay[created]++
       }

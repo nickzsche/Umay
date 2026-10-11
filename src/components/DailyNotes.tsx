@@ -1,5 +1,6 @@
 import { useState, useMemo, useCallback } from 'react'
 import { AppData, DailyNote } from '../types'
+import { toLocalDateString } from '../dateUtils'
 import { X, Calendar, Plus, ChevronLeft, ChevronRight, FileText, Clock } from 'lucide-react'
 
 interface DailyNotesProps {
@@ -23,10 +24,6 @@ function getFirstDayOfMonth(year: number, month: number): number {
   return new Date(year, month, 1).getDay()
 }
 
-function formatDate(date: Date): string {
-  return date.toISOString().split('T')[0]
-}
-
 export default function DailyNotes({
   data,
   onUpdateDailyNote,
@@ -36,7 +33,7 @@ export default function DailyNotes({
   const today = new Date()
   const [viewMonth, setViewMonth] = useState(today.getMonth())
   const [viewYear, setViewYear] = useState(today.getFullYear())
-  const [selectedDate, setSelectedDate] = useState<string>(formatDate(today))
+  const [selectedDate, setSelectedDate] = useState<string>(toLocalDateString(today))
   const [editContent, setEditContent] = useState<Record<string, string>>({})
 
   const dailyNotesMap = useMemo(() => {
@@ -49,7 +46,7 @@ export default function DailyNotes({
 
   const daysInMonth = getDaysInMonth(viewYear, viewMonth)
   const firstDay = getFirstDayOfMonth(viewYear, viewMonth)
-  const todayStr = formatDate(today)
+  const todayStr = toLocalDateString(today)
 
   const selectedNote = dailyNotesMap[selectedDate]
   const displayContent = editContent[selectedDate] ?? selectedNote?.content ?? ''
@@ -138,7 +135,7 @@ export default function DailyNotes({
                   return <div key={`empty-${idx}`} className="aspect-square" />
                 }
 
-                const dateStr = formatDate(new Date(viewYear, viewMonth, day))
+                const dateStr = toLocalDateString(new Date(viewYear, viewMonth, day))
                 const isToday = dateStr === todayStr
                 const isSelected = dateStr === selectedDate
                 const hasNote = !!dailyNotesMap[dateStr]

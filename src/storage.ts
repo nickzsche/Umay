@@ -1,4 +1,5 @@
 import { AppData, ElectronAPI } from './types'
+import { toLocalDateString } from './dateUtils'
 
 declare global {
   interface Window {
@@ -117,7 +118,7 @@ This project contains ${notes.length} notes. Please analyze and provide insights
 }
 
 export const getDailyNote = (data: AppData) => {
-  const today = new Date().toISOString().split('T')[0]
+  const today = toLocalDateString(new Date())
   const dailyNote = data.dailyNotes.find(dn => dn.date === today)
   if (!dailyNote) {
     const newDailyNote = {
