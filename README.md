@@ -115,6 +115,9 @@ npm run dev
 # Type-check and build the renderer + Electron main/preload
 npm run build
 
+# Run the unit tests (uses bun)
+npm run test
+
 # Build installers (dmg / nsis / AppImage) into ./release
 npm run package
 ```
@@ -233,6 +236,9 @@ npm run dev
 
 # Tip kontrolü + renderer ve Electron main/preload derlemesi
 npm run build
+
+# Birim testleri çalıştırın (bun kullanır)
+npm run test
 
 # Kurulum paketlerini (dmg / nsis / AppImage) ./release içine üretin
 npm run package
