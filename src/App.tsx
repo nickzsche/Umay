@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 import { AppData, Project, Note, NoteType, NoteTemplate, ViewMode } from './types'
-import { loadData, saveData, createEmptyData, exportAiPrompt } from './storage'
+import { loadData, saveData, createEmptyData, exportAiPrompt, upsertDailyNote as upsertDailyNoteData } from './storage'
 import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts'
 import Sidebar from './components/Sidebar'
 import ProjectView from './components/ProjectView'
@@ -290,16 +290,8 @@ export default function App() {
     }
   }, [data.projects, selectedProjectId])
 
-  const updateDailyNote = useCallback((dailyNoteId: string, content: string) => {
-    setData(prev => ({
-      ...prev,
-      dailyNotes: prev.dailyNotes.map(dn =>
-        dn.id === dailyNoteId
-          ? { ...dn, content, updatedAt: new Date().toISOString() }
-          : dn
-      ),
-      lastUpdated: new Date().toISOString(),
-    }))
+  const upsertDailyNote = useCallback((date: string, content: string) => {
+    setData(prev => upsertDailyNoteData(prev, date, content))
   }, [])
 
   const addReminder = useCallback((noteId: string, reminder: { dueDate: string; message: string; completed: boolean }) => {
@@ -604,7 +596,7 @@ export default function App() {
       
       <DailyNotes
         data={data}
-        onUpdateDailyNote={updateDailyNote}
+        onUpsertDailyNote={upsertDailyNote}
         isOpen={showDailyNotes}
         onClose={() => setShowDailyNotes(false)}
       />

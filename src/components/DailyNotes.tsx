@@ -5,7 +5,7 @@ import { X, Calendar, Plus, ChevronLeft, ChevronRight, FileText, Clock } from 'l
 
 interface DailyNotesProps {
   data: AppData
-  onUpdateDailyNote: (id: string, content: string) => void
+  onUpsertDailyNote: (date: string, content: string) => void
   isOpen: boolean
   onClose: () => void
 }
@@ -26,7 +26,7 @@ function getFirstDayOfMonth(year: number, month: number): number {
 
 export default function DailyNotes({
   data,
-  onUpdateDailyNote,
+  onUpsertDailyNote,
   isOpen,
   onClose,
 }: DailyNotesProps) {
@@ -70,14 +70,15 @@ export default function DailyNotes({
   }
 
   const handleCreateToday = useCallback(() => {
+    onUpsertDailyNote(todayStr, editContent[todayStr] ?? selectedNote?.content ?? '')
     setSelectedDate(todayStr)
-  }, [todayStr])
+  }, [todayStr, editContent, selectedNote, onUpsertDailyNote])
 
   const handleBlur = useCallback(() => {
-    if (selectedNote && editContent[selectedDate] !== undefined) {
-      onUpdateDailyNote(selectedNote.id, editContent[selectedDate])
+    if (editContent[selectedDate] !== undefined) {
+      onUpsertDailyNote(selectedDate, editContent[selectedDate])
     }
-  }, [selectedNote, editContent, selectedDate, onUpdateDailyNote])
+  }, [editContent, selectedDate, onUpsertDailyNote])
 
   if (!isOpen) return null
 
@@ -245,12 +246,7 @@ export default function DailyNotes({
             value={displayContent}
             onChange={e => setEditContent(prev => ({ ...prev, [selectedDate]: e.target.value }))}
             onBlur={handleBlur}
-            placeholder={
-              selectedNote
-                ? 'Write your daily note...'
-                : 'Click "Create Today\'s Note" to start writing...'
-            }
-            readOnly={!selectedNote}
+            placeholder="Write your daily note..."
           />
 
           {/* Footer */}

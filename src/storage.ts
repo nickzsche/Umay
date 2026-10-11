@@ -117,6 +117,23 @@ This project contains ${notes.length} notes. Please analyze and provide insights
 `
 }
 
+export const upsertDailyNote = (data: AppData, date: string, content: string): AppData => {
+  const now = new Date().toISOString()
+  const exists = data.dailyNotes.some(dn => dn.date === date)
+  return {
+    ...data,
+    dailyNotes: exists
+      ? data.dailyNotes.map(dn =>
+          dn.date === date ? { ...dn, content, updatedAt: now } : dn
+        )
+      : [
+          ...data.dailyNotes,
+          { id: `daily-${date}`, date, content, createdAt: now, updatedAt: now },
+        ],
+    lastUpdated: now,
+  }
+}
+
 export const getDailyNote = (data: AppData) => {
   const today = toLocalDateString(new Date())
   const dailyNote = data.dailyNotes.find(dn => dn.date === today)
