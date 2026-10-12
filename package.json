@@ -19,7 +19,8 @@
     "package": "npm run build && electron-builder",
     "preview": "vite preview",
     "electron:dev": "vite --mode development",
-    "test": "TZ=Europe/Istanbul bun test"
+    "test": "TZ=Europe/Istanbul bun test",
+    "typecheck": "tsc --noEmit"
   },
   "build": {
     "appId": "com.nickzsche.umay",
